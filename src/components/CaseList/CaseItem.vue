@@ -11,10 +11,14 @@
       </div>
       <div class="back">
         <div class="intro">
+          <router-link :to="{name:'detail page', params:{
+            id:caseObj._id
+          }}">
           <p>
             {{caseObj.intro}}
           </p>
           <a href="javascript:;" class="more">了解详情</a>
+          </router-link>
         </div>
       </div>
 

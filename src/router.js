@@ -27,6 +27,7 @@ export default new Router({
       props:(route)=>{
         return {id: route.params.id }
       },
+      
       component: () => import(/* webpackChunkName: "about" */ './pages/Detail.vue')
     }
   ]

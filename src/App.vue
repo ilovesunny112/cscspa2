@@ -17,9 +17,9 @@
     <div class="header">
       <div class="container">
         <h1>
-          <a href="javascript:;">
+          <router-link :to="{name:'home'}">
             微软中国案例中心
-          </a>
+          </router-link>
         </h1>
       </div>
     </div>
@@ -52,10 +52,10 @@
 
 
 
-    <div id="nav">
+    <!-- <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/detail/577">Detail</router-link>
-    </div>
+    </div> -->
     
     <vue-progress-bar></vue-progress-bar>
   </div>

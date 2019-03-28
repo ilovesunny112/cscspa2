@@ -2,6 +2,7 @@
 import {getCaseById} from '../data/index.js'
 import { release } from 'os';
 import CaseList from '../components/CaseList/List.vue'
+import { relative } from 'path';
 export default {
   props:["id"],
   components:{
@@ -10,19 +11,19 @@ export default {
   data(){
     return {
       loaded:false,
-      caseBody:{
-
-      },
+      caseBody:null,
       related:[]
     }
   },
   async created(){
+    this.$Progress.start()
     let data = await this.fetchData(this.id)
     console.log(data)
     let {body, related} = data
     this.caseBody = body 
     this.related = related
     this.loaded = true
+    this.$Progress.finish()
   },
   mounted(){
 
@@ -41,7 +42,31 @@ export default {
         }
       })
     }
+  },
+  async beforeRouteUpdate(to, from, next){
+    this.$Progress.start()
+    console.log("before route update")
+    this.caseBody = null
+    this.related = []
+    this.loaded = false
+    try{
+      let data = await this.fetchData(to.params.id);
+      let {body, related} = data
+      this.caseBody = body
+      this.related = related
+      this.loaded=true
+      this.$Progress.finish()
+    }
+    catch(err){
+      console.log(err)
+      this.$Progress.finish()
+    }
+    
+
+
+
   }
+   
 }
 </script>
 
@@ -201,4 +226,5 @@ export default {
 // case detail page
 
 </style>
+
 

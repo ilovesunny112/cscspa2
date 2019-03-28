@@ -150,7 +150,7 @@ export default {
         let caseResp = await getListByPage(that.curPage)
         let caseData = caseResp.data;
 
-        that.caseArr = that.caseArr.concat(caseData)
+        that.caseArr =  caseData 
 
         that.loading = false
         console.log(1)
@@ -517,6 +517,7 @@ export default {
      width: 75%;
      padding-left: 10px;
      box-sizing: border-box;
+     padding-bottom: 100px;
    }
  }
   

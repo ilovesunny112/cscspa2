@@ -54,7 +54,7 @@
 
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/detail/123">Detail</router-link>
+      <router-link to="/detail/577">Detail</router-link>
     </div>
     
     <vue-progress-bar></vue-progress-bar>

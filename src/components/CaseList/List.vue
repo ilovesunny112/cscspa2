@@ -1,7 +1,7 @@
 <template>
   <ul>
-    <li v-for="(item, index) in caseArr" :key="index">
-      <case-item  :case-obj="item" ></case-item>
+    <li v-for="(item, index) in caseArr" :key="index" :style="styleObj">
+      <case-item  :case-obj="item"  ></case-item>
     </li>
      
   </ul>
@@ -26,10 +26,23 @@ export default {
     caseArr:{
       type:Array,
       required:true
+    },
+    colomn:{
+      type:Number
     }
   },
   components:{
     CaseItem
+  },
+  computed:{
+    styleObj(){
+      if(this.colomn == 4){
+        return {
+          width:'23%',
+          marginLeft:"2%"
+        }
+      }
+    }
   }
 }
 </script>

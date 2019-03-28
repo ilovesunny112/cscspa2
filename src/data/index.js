@@ -19,3 +19,7 @@
   return axios.get(`/china/casestudies/spa/api/case/p/${num}`)
  }
  
+
+ export async function getCaseById(id){
+   return axios.get(`/china/casestudies/spa/api/case/${id}`)
+ }

@@ -98,9 +98,11 @@
         <div class="caselist fr">
           <vue-data-loading   :loading="loading"
               :listens="['pull-down', 'infinite-scroll']"
+              :completed="completed"
               @infinite-scroll="infiniteScroll"
               @pull-down="pullDown">
             <case-list :cur-page="1" :caseArr="caseArr"></case-list>
+            <div slot="infinite-scroll-loading"> <span>努力的加载...</span></div>
           </vue-data-loading>
         </div>
       </div>
@@ -126,7 +128,8 @@ export default {
       loading:false,
       solutionChecked:[],
       timer:null,
-      queryObj:null
+      queryObj:null,
+      completed:false
     }
   },
   components:{
@@ -203,7 +206,7 @@ export default {
         let page = this.curPage + 1
 
         let caseResp
-        if(this.queryObj.solution || this.queryObj.industry){
+        if(this.queryObj && (this.queryObj.solution || this.queryObj.industry)){
           caseResp = await getListByPage(page, this.queryObj)
         }
         else {
@@ -212,7 +215,11 @@ export default {
         
         let caseData = caseResp.data;
         if(caseData.code == 0){
+
           this.caseArr = this.caseArr.concat(caseData.data)
+          if(caseData.data.length<12){
+            this.completed = true
+          }
         }
         else {
 

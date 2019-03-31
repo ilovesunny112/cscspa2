@@ -15,11 +15,21 @@
  }
 
 
- export async function getListByPage( num = 1){
-  return axios.get(`/china/casestudies/spa/api/case/p/${num}`)
- }
+//  export async function getListByPage( num = 1){
+//   return axios.get(`/china/casestudies/spa/api/case/p/${num}`)
+//  }
  
 
- export async function getCaseById(id){
+ export async function getCaseById(id, ){
+   
    return axios.get(`/china/casestudies/spa/api/case/${id}`)
+   
  }
+
+ export async function getListByPage(page, queryObj={solution:[],industry:[]}){
+   return axios.post(`/china/casestudies/spa/api/case/list/${page}`, queryObj)
+ }
+
+ 
+
+ 

@@ -26,7 +26,7 @@
 
 
     <!-- 从这开始 是 组件 的内容 -->
-    <transition>
+    <transition name="fade">
       <router-view/>
     </transition>
     <!-- 组件结束 -->
@@ -265,6 +265,13 @@
       color: #42b983;
     }
   }
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
 

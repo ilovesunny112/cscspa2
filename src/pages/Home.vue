@@ -77,7 +77,7 @@
               <ul class="opts">
                 <li class="item" v-for="(opt,idx) in item.options" :key="idx" >
                   <label>
-                    <input type="checkbox" :value="`${item.title}_${opt.title}`" :checked="opt.checked" ><span>{{opt.title}}</span>
+                    <input type="checkbox" :value="opt.title=='全部' ? `${item.title}_${opt.title}`:`${opt.title}`" v-model="solutionChecked" ><span>{{opt.title}}</span>
                   </label>
                 </li>
               </ul>
@@ -89,7 +89,7 @@
             <ul class="opts">
               
               <li class="item" v-for="(ind, index) in industry" :key="index" >
-                <label><span>{{ind}}</span><input type="radio" :value="ind" name="indu" v-model="indSelected"></label>
+                <label><span>{{ind}}</span><input type="radio" :value="ind" name="indu" v-model="indChecked"></label>
               </li>
             </ul>
           </div>
@@ -118,17 +118,35 @@ export default {
     
   data(){
     return {
-      indSelected:"",
+      indChecked:[],
       solutions:[],
       industry:[],
       caseArr:[],
       curPage:1,
       loading:false,
+      solutionChecked:[],
+      timer:null,
+      queryObj:null
     }
   },
   components:{
     CaseList,
     VueDataLoading
+  },
+
+  watch:{
+    solutionChecked(){
+      this.initNewSearch()
+    },
+    indChecked(){
+      this.initNewSearch()
+    }
+  },
+
+  computed:{
+    // solutionChecked(){
+
+    // },
   },
    methods:{
     toggleShowStatus(item){
@@ -150,11 +168,17 @@ export default {
         let caseResp = await getListByPage(that.curPage)
         let caseData = caseResp.data;
 
-        that.caseArr =  caseData 
+        if(caseData.code == 0 ){
+          that.caseArr = that.caseArr.concat(caseData.data)   
+        }
+        else {
 
-        that.loading = false
-        console.log(1)
-        resolve()
+        }
+
+        
+
+        that.loading = false 
+        resolve(caseData)
         this.$Progress.finish()
         } catch(err){
           reject(err)
@@ -174,10 +198,26 @@ export default {
       try{
         this.$Progress.start()
         console.log("curpage is ", this.curPage)
+
+
         let page = this.curPage + 1
-        let caseResp = await getListByPage(page)
+
+        let caseResp
+        if(this.queryObj.solution || this.queryObj.industry){
+          caseResp = await getListByPage(page, this.queryObj)
+        }
+        else {
+          caseResp = await getListByPage(page)
+        }
+        
         let caseData = caseResp.data;
-        this.caseArr = caseData
+        if(caseData.code == 0){
+          this.caseArr = this.caseArr.concat(caseData.data)
+        }
+        else {
+
+        }
+
         this.curPage = page
         this.loading = false
         this.$Progress.finish()
@@ -185,6 +225,17 @@ export default {
       catch(err){
         console.log(err)
       }
+    },
+
+    initNewSearch(){
+      this.queryObj = {
+        solution:this.solutionChecked,
+        industry:[this.indChecked]
+      }
+      this.curPage = 0
+      this.caseArr = []
+      this.loading = true;
+      this.fetchData();
     }
   },
   async created(){
@@ -193,9 +244,6 @@ export default {
   },
   async mounted(){
     this.$Progress.start()
-  setTimeout(()=>{
-          
-        },4000)
   }
 }
 </script>

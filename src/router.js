@@ -29,6 +29,39 @@ export default new Router({
       },
       
       component: () => import(/* webpackChunkName: "about" */ './pages/Detail.vue')
+    },
+    {
+      path:"/digital/customer-connection",
+      name:"customer connection",
+      component:Home,
+      props:{
+        digitalPage:true
+      }
+    }
+    ,
+    {
+      path:"/digital/power-employee",
+      name:"power employee",
+      component:Home,
+      props:{
+        digitalPage:true
+      }
+    },
+    {
+      path:"/digital/optimize-business",
+      name:"optimize business",
+      component:Home,
+      props:{
+        digitalPage:true
+      }
+    },
+    {
+      path:"/digital/transform-service",
+      name:"transform service",
+      component:Home,
+      props:{
+        digitalPage:true
+      }
     }
   ]
 })

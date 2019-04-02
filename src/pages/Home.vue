@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :key="handleDate">
 <div class="banner">
       <ul>
         <li class="active">
@@ -43,18 +43,18 @@
 
     </div>
     <div class="main">
-      <div class="digital">
+      <div class="digital" v-if="!digitalPage">
         <h3>数字化转型领域</h3>
         <ul>
-          <li><a href="#">
-            密切客户沟通</a></li>
-          <li><a href="#">
+          <li><router-link :to="{name:'customer connection'}">
+            密切客户沟通</router-link></li>
+          <li><router-link :to="{name:'power employee'}">
             予力赋能员工
-            </a></li>
-          <li><a href="#">
-            优化业务运营</a></li>
-          <li><a href="#">
-            转型产品服务</a></li>
+            </router-link></li>
+          <li><router-link :to="{name:'optimize business'}">
+            优化业务运营</router-link></li>
+          <li><router-link :to="{name:'transform service'}">
+            转型产品服务</router-link></li>
         </ul>
       </div>
 
@@ -62,7 +62,7 @@
       <div class="container">
         <div class="search fl">
           <div class="inputbox">
-            <input type="text" placeholder="" >
+            <input type="text" placeholder="" v-model="keyword" >
             <input type="button" value="so" >
           </div>
           <div class="clearall">
@@ -112,12 +112,18 @@
   </div>
 </template>
 <script>
-import {getAllMetaData, getListByPage} from '../data/index.js'
+import {getAllMetaData, getListByPage, getListByKeyword} from '../data/index.js'
 import CaseList from '../components/CaseList/List'
 import VueDataLoading from 'vue-data-loading'
+import { setTimeout, clearTimeout } from 'timers';
 
 export default {
-    
+  props:{
+    digitalPage:{
+      type:Boolean,
+      default:false
+    }
+  },
   data(){
     return {
       indChecked:[],
@@ -129,7 +135,9 @@ export default {
       solutionChecked:[],
       timer:null,
       queryObj:null,
-      completed:false
+      completed:false,
+      keyword:"",
+      
     }
   },
   components:{
@@ -143,13 +151,30 @@ export default {
     },
     indChecked(){
       this.initNewSearch()
+    },
+    keyword(){
+      clearTimeout(this.timer)
+      this.curPage = 0
+      this.timer = null;
+      
+      if(this.keyword.length > 1){
+        this.completed = false
+        this.caseArr = []
+        this.timer = setTimeout(()=>{
+          this.fetchDataByKeyword(this.curPage, this.keyword )
+        },500)
+      }
     }
+    
   },
 
   computed:{
     // solutionChecked(){
 
     // },
+    handleDate(){
+    return new Date().getTime()
+    }
   },
    methods:{
     toggleShowStatus(item){
@@ -192,7 +217,13 @@ export default {
     infiniteScroll(){
       console.log("infiniteScroll invoked");
       this.loading = true;
-      this.fetchData();
+      if(this.keyword){
+        this.fetchDataByKeyword()
+      }
+      else {
+        this.fetchData();
+      }
+      
     },
     pullDown(){
       console.log("pulldown invoked");
@@ -243,7 +274,23 @@ export default {
       this.caseArr = []
       this.loading = true;
       this.fetchData();
+    },
+
+    async fetchDataByKeyword(){
+      this.curPage++
+      this.$Progress.start()
+      let caseListRsp = await getListByKeyword(this.curPage, this.keyword)
+      let data = caseListRsp.data;
+      this.loading = false
+      if(data.code == 0 && data.data.length >0){
+        this.caseArr = this.caseArr.concat(data.data)
+      }
+      else {
+        this.completed = true
+      }
+      this.$Progress.finish()
     }
+
   },
   async created(){
    await this.init()

@@ -61,6 +61,7 @@ export default {
       console.log(err)
       this.$Progress.finish()
     }
+    next()
   }
    
 }

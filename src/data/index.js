@@ -30,6 +30,10 @@
    return axios.post(`/china/casestudies/spa/api/case/list/${page}`, queryObj)
  }
 
+
+ export async function getListByKeyword(page, keyword){
+   return axios.get(`/china/casestudies/spa/api/case/keyword/${keyword}/${page}`)
+ }
  
 
  

@@ -5,48 +5,63 @@
   >
     <div class="banner">
       <ul>
-        <li class="active">
+        <li v-show="scenario=='customer'">
           <img
-            src="https://www.microsoft.com/china/casestudies/CaseImages/banners/huafeng-banner.jpg"
+            src="https://www.microsoft.com/china/casestudies/images/CaseClass1.jpg"
             alt=""
           >
           <div class="container">
             <div class="info">
-              <h3>华风爱科气象科技（北京）有限公司</h3>
+              <h3>密切客户沟通</h3>
               <p>
-                Azure 的虚拟机、存储以及 PaaS 层服务保障华风爱科的气象数据安全高效的实现每秒数万次访问
+                Engage Customers
               </p>
-              <div class="cta"><a href="javascript:;">了解详情</a></div>
+
             </div>
           </div>
         </li>
-        <li>
+        <li v-show="scenario=='employee'">
           <img
-            src="https://www.microsoft.com/china/casestudies/CaseImages/banners/huafeng-banner.jpg"
+            src="https://www.microsoft.com/china/casestudies/images/CaseClass2.jpg"
             alt=""
           >
           <div class="container">
             <div class="info">
-              <h3>华风爱科气象科技（北京）有限公司</h3>
+              <h3>予力赋能员工
+              </h3>
               <p>
-                Azure 的虚拟机、存储以及 PaaS 层服务保障华风爱科的气象数据安全高效的实现每秒数万次访问
+                Empower Employees
               </p>
-              <div class="cta"><a href="javascript:;">了解详情</a></div>
             </div>
           </div>
         </li>
-        <li>
+        <li v-show="scenario=='business'">
           <img
-            src="https://www.microsoft.com/china/casestudies/CaseImages/banners/huafeng-banner.jpg"
+            src="https://www.microsoft.com/china/casestudies/images/CaseClass3.jpg"
             alt=""
           >
           <div class="container">
             <div class="info">
-              <h3>华风爱科气象科技（北京）有限公司</h3>
+              <h3>优化业务运营</h3>
               <p>
-                Azure 的虚拟机、存储以及 PaaS 层服务保障华风爱科的气象数据安全高效的实现每秒数万次访问
+                Optimize Operations
               </p>
-              <div class="cta"><a href="javascript:;">了解详情</a></div>
+            </div>
+          </div>
+        </li>
+        <li v-show="scenario=='service'">
+          <img
+            src="https://www.microsoft.com/china/casestudies/images/CaseClass4.jpg"
+            alt=""
+          >
+          <div class="container">
+            <div class="info">
+              <h3>转型产品服务
+              </h3>
+              <p>
+                Transform Products
+              </p>
+
             </div>
           </div>
         </li>
@@ -181,7 +196,8 @@ export default {
     digitalPage: {
       type: Boolean,
       default: false
-    }
+    },
+    scenario: String
   },
   data() {
     return {
@@ -642,321 +658,6 @@ export default {
       padding-bottom: 100px;
     }
   }
-}
-
-@media screen and (max-width: 1199px) {
-}
-
-@media screen and (max-width: 991px) {
-}
-
-@media screen and (max-width: 767px) {
-}
-@media screen and (max-width: 749px) {
-}
-@media screen and (max-width: 639px) {
-}
-@media screen and (max-width: 414px) {
-  .banner {
-    ul {
-      width: 100%;
-      height: 440px;
-
-      li {
-        position: relative;
-        float: left;
-        width: 100%;
-        margin: 0;
-        height: 440px;
-
-        &.active {
-          margin-right: 0;
-        }
-
-        img {
-          width: auto;
-          height: 240px;
-        }
-        .container {
-          width: 100%;
-          height: 200px;
-          background: #333;
-          position: absolute;
-          top: 240px;
-          margin: 0;
-          padding: 0;
-          text-align: center;
-
-          .info {
-            width: 90%;
-            height: 160px;
-            text-align: left;
-            margin: 0 auto;
-            padding: 0;
-
-            color: #fff;
-            background: none;
-            text-align: center;
-            position: static;
-            h3 {
-              font-size: 20px;
-              line-height: 48px;
-            }
-
-            p {
-              line-height: 26px;
-              font-size: 16px;
-            }
-            .cta {
-              a:link,
-              a:visited,
-              a:hover,
-              a:active {
-                color: #fff;
-                font-size: 16px;
-                // font-weight: bold;
-                line-height: 34px;
-                display: inline-block;
-              }
-
-              a:after {
-                content: ">";
-                display: inline-block;
-                transform: translateX(4px) scale(1);
-                transition: all 0.5s;
-              }
-
-              a:hover:after {
-                transform: translateX(12px) scale(1);
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-  .main {
-    width: 100%;
-    margin: 0 auto;
-    margin-top: 11px;
-    text-align: left;
-    overflow: hidden;
-
-    .digital {
-      width: 95%;
-      margin: 0 auto;
-      h3 {
-        line-height: 46px;
-        font-size: 18px;
-      }
-
-      ul {
-        margin: 0 auto;
-        overflow: hidden;
-        // max-width: 1280px;
-        li {
-          width: 100%;
-          box-sizing: border-box;
-          margin: 0;
-          background: #646464;
-          text-align: center;
-          margin-top: 10px;
-
-          a {
-            display: block;
-            line-height: 42px;
-            font-size: 14px;
-            color: #fff;
-            transition: all 0.6s;
-          }
-          a:hover {
-            background-color: #3c3c3c;
-          }
-        }
-      }
-    }
-
-    .container {
-      overflow: hidden;
-      //  margin-left: -2%;
-      width: 95%;
-      margin: 0 auto;
-      padding-top: 20px;
-
-      .search {
-        width: 100%;
-        .inputbox {
-          border: 1px solid #b5b5b5;
-          line-height: 30px;
-          height: 30px;
-          overflow: hidden;
-          position: relative;
-
-          input {
-            height: 30px;
-            border: none;
-            background-color: #fff;
-            margin: 0;
-            padding: 0;
-            display: inline-block;
-            outline: none;
-            box-sizing: border-box;
-          }
-
-          input:first-child {
-            width: 100%;
-            padding: 0 40px 0 10px;
-          }
-          input:last-child {
-            width: 30px;
-            height: 30px;
-            position: absolute;
-            right: 0;
-            top: 0;
-          }
-        }
-
-        .clearall {
-          margin-top: 24px;
-          border-top: 1px solid #787878;
-
-          a {
-            line-height: 40px;
-            height: 40px;
-            font-size: 12px;
-            color: #05a4ee;
-            padding-left: 10px;
-          }
-        }
-        h3 {
-          height: 40px;
-          line-height: 40px;
-          padding-left: 10px;
-          color: #fff;
-          font-size: 16px;
-          font-weight: bold;
-          background: #646464;
-        }
-        .solution {
-          ul {
-            li {
-              margin-top: 1px;
-              h4 {
-                height: 35px;
-                line-height: 35px;
-                background-color: #dcdedf;
-                padding-left: 44px;
-                color: #505050;
-                font-size: 13px;
-                position: relative;
-                cursor: pointer;
-                & + ul {
-                  height: 0px;
-                }
-                &:after {
-                  content: "";
-                  display: block;
-                  position: absolute;
-                  width: 8px;
-                  height: 8px;
-                  border: 1px solid #6b6270;
-                  border-bottom-color: transparent;
-                  border-right-color: transparent;
-                  top: 16px;
-                  right: 10px;
-                  transition: all 0.6s;
-                  transform: rotateZ(45deg) scale(0.8);
-                  transform-origin: 50%;
-                }
-
-                &.active {
-                  &:after {
-                    transform: rotate(945deg);
-                    top: 10px;
-                  }
-
-                  & + ul.opts {
-                    height: auto;
-                    transform: scaleY(1);
-                    max-height: 270px;
-                  }
-                }
-              }
-
-              .opts {
-                // height: 0px;
-                // transform: scaleY(0);
-                overflow: hidden;
-                transform-origin: top;
-                transition: all 0.9s;
-                max-height: 0;
-                height: 0;
-                .item {
-                  label {
-                    line-height: 30px;
-                    height: 30px;
-                    font-size: 12px;
-                    display: block;
-                    cursor: pointer;
-                    padding-left: 10px;
-
-                    input {
-                      margin: 0;
-                      padding: 0;
-                      margin-top: -2px;
-                      margin-bottom: 1px;
-                      vertical-align: middle;
-                    }
-
-                    span {
-                      padding-left: 12px;
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-
-        .industry {
-          margin-top: 40px;
-
-          .opts {
-            .item {
-              line-height: 40px;
-              border-bottom: 1px solid #c1c1c1;
-              font-size: 12px;
-
-              label {
-                display: block;
-                cursor: pointer;
-                padding-left: 10px;
-                position: relative;
-                input {
-                  margin-top: -2px;
-                  margin-bottom: 1px;
-                  vertical-align: middle;
-                  position: absolute;
-                  right: 10px;
-                  top: 16px;
-                }
-              }
-            }
-          }
-        }
-      }
-
-      .caselist {
-        width: 95%;
-        margin: 0 auto;
-
-        padding-bottom: 100px;
-        float: none;
-      }
-    }
-  }
-}
-@media screen and (max-width: 375px) {
 }
 </style>
 

@@ -18,14 +18,15 @@ const options = {
   autoRevert: true,
   location: 'top',
   inverse: false,
-  position:"fixed",
-  autoFinish:true,
+  position: "fixed",
+  autoFinish: true,
 }
 
 Vue.use(VueProgressBar, options)
 
 
 Vue.config.productionTip = false
+
 
 new Vue({
   router,

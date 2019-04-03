@@ -58,7 +58,7 @@
         class="digital"
         v-if="!digitalPage"
       >
-        <h3>数字化转型领域</h3>
+        <h3 >数字化转型领域</h3>
         <ul>
           <li>
             <router-link :to="{name:'customer connection'}">
@@ -97,7 +97,7 @@
             <a href="javascript:;">清空所有选项</a>
           </div>
           <div class="solution">
-            <h3>解决方案领域</h3>
+            <h3 :class="{active:solutionActive}" @click="solutionActive=!solutionActive">解决方案领域</h3>
             <ul class="">
 
               <li
@@ -127,7 +127,7 @@
             </ul>
           </div>
           <div class="industry">
-            <h3>行业</h3>
+            <h3 :class="{active:industryActive}"  @click="industryActive=!industryActive">行业</h3>
             <ul class="opts">
 
               <li
@@ -149,10 +149,10 @@
         <div class="caselist fr">
           <vue-data-loading
             :loading="loading"
-            :listens="['pull-down', 'infinite-scroll']"
+            :listens="[ 'infinite-scroll']"
             :completed="completed"
             @infinite-scroll="infiniteScroll"
-            @pull-down="pullDown"
+             
           >
             <case-list
               :cur-page="1"
@@ -196,7 +196,9 @@ export default {
       queryObj: null,
       completed: false,
       keyword: "",
-      componentShow: true
+      componentShow: true,
+      industryActive:false,
+      solutionActive:false
     };
   },
   components: {
@@ -785,6 +787,7 @@ export default {
 
       .search {
         width: 100%;
+        float: none;
         .inputbox {
           border: 1px solid #b5b5b5;
           line-height: 30px;
@@ -838,6 +841,43 @@ export default {
           background: #646464;
         }
         .solution {
+
+          h3 {
+            position: relative;
+
+            &::after{
+              content:"+";
+              text-align: center;
+              width: 40px;
+              height: 40px;
+              display: block;
+              color: #fff;
+              font-size: 26px;
+              font-weight: 100;
+              position: absolute;
+              top: 0;
+              right: 0px;
+              transition: .5s all;
+              transform: rotateZ(0deg) scale(0.6)
+            }
+
+            &.active:after{
+              content:"-";
+              transform: rotateZ(540deg) scale(1.2)
+            }
+
+            &+ul{
+              max-height: 0;
+              transition: .5s all;
+              overflow: hidden;
+            }
+
+            &.active+ul{
+              max-height:700px; 
+            }
+            
+          }
+
           ul {
             li {
               margin-top: 1px;
@@ -919,7 +959,43 @@ export default {
         }
 
         .industry {
-          margin-top: 40px;
+          margin-top: 10px;
+
+          h3 {
+            position: relative;
+
+            &::after{
+              content:"+";
+              text-align: center;
+              width: 40px;
+              height: 40px;
+              display: block;
+              color: #fff;
+              font-size: 26px;
+              font-weight: 100;
+              position: absolute;
+              top: 0;
+              right: 0px;
+              transition: .5s all;
+              transform: rotateZ(0deg) scale(0.6)
+            }
+
+            &.active:after{
+              content:"-";
+              transform: rotateZ(540deg) scale(1.2)
+            }
+
+            &+ul{
+              max-height: 0;
+              transition: .5s all;
+              overflow: hidden;
+            }
+
+            &.active+ul{
+              max-height:750px; 
+            }
+            
+          }
 
           .opts {
             .item {
@@ -947,6 +1023,7 @@ export default {
       }
 
       .caselist {
+        padding-top: 20px;
         width: 95%;
         margin: 0 auto;
 

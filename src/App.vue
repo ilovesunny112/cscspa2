@@ -7,8 +7,7 @@
           alt=""
         ></div>
       <transition
-        name="fade"
-        @before-enter=""
+        name="fade" 
       >
         <ul :class="{active:active}">
           <li class="navitem"><a href="javascript:;">商店</a></li>

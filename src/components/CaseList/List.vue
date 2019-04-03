@@ -86,7 +86,7 @@ ul {
 
     li {
       // display: table-cell;
-      max-width: 50%;
+      // max-width: 50%;
       width: 45%;
       padding: 4px;
       float: left;
@@ -115,23 +115,26 @@ ul {
     padding: 4px 5px;
 
     li {
-      // display: table-cell;
-      max-width: 100%;
+      // display: table-cell; 
+      
       width: 90%;
       padding: 4px;
-      float: left;
+      float: none !important;
       margin-left: 0%;
+      margin-right: 0;
+      margin: 0 auto;
       margin-bottom: 5%;
 
       box-shadow: 0px 0px 4px #c1c1c1;
-    }
 
-    li:nth-child(2n + 1) {
-      float: left;
+      &:nth-child(2n),
+      &:nth-child(2n+1){
+        margin-right: auto;
+        margin-left: auto;
+        float: none;
+      }
     }
-    li:nth-child(2n) {
-      float: right;
-    }
+   
   }
 }
 @media screen and (max-width: 375px) {

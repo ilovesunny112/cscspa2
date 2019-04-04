@@ -6,9 +6,7 @@
           src="./assets/mslogo.png"
           alt=""
         ></div>
-      <transition
-        name="fade" 
-      >
+      <transition name="fade">
         <ul :class="{active:active}">
           <li class="navitem"><a href="javascript:;">商店</a></li>
           <li class="navitem"><a href="javascript:;">产品</a></li>
@@ -19,8 +17,9 @@
       <ul class="header-toggle">
         <li>
           <button
-            class="header-toggle-menu open"
+            class="header-toggle-menu"
             @click="toggleMenu"
+            :class="[active?'close':'open']"
           ></button>
         </li>
         <li>
@@ -285,6 +284,223 @@
 }
 
 @media screen and (max-width: 991px) {
+  .nav {
+    width: 100%;
+    margin: 0 auto;
+    height: 50px;
+    position: relative;
+
+    .logo {
+      float: left;
+      height: 100%;
+      width: 108px;
+      position: relative;
+      padding-left: 30px;
+      img {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+      }
+    }
+    ul {
+      list-style: none;
+
+      margin: 0;
+      padding: 0;
+      padding-bottom: 10px;
+      border-top: 1px solid #e6e6e6;
+      border-bottom: 1px solid #e6e6e6;
+      float: left;
+      display: none;
+      position: absolute;
+      top: 50px;
+      left: 0;
+      width: 100%;
+      background-color: #f2f2f2;
+      z-index: 999;
+
+      &.active {
+        display: block;
+      }
+
+      .navitem {
+        line-height: 40px;
+        height: 40px;
+        width: 100%;
+        border-bottom: 1px solid #e6e6e6;
+
+        a {
+          display: block;
+          height: 100%;
+          line-height: 40px;
+          font-size: 16px;
+          transition: 0.6s all;
+        }
+
+        a:link,
+        a:visited,
+        a:hover,
+        a:active {
+          text-decoration: none;
+          color: #2f2f2f;
+        }
+
+        a:hover {
+          color: #2c3e50;
+          background-color: #f1f1f1;
+        }
+      }
+
+      .togglebtn {
+        display: block;
+      }
+    }
+    .header-toggle {
+      display: block;
+      position: absolute;
+      top: 0px;
+      right: 0;
+      left: auto;
+      height: 50px;
+      background-color: #fff;
+      border: none;
+      width: 100px;
+      padding: 0;
+      margin: 0;
+      float: none;
+
+      li {
+        float: right;
+        padding-right: 20px;
+
+        button {
+          width: 16px;
+          height: 16px;
+          margin: 0;
+          padding: 0;
+          margin-top: 18px;
+          border: none;
+          outline: none;
+        }
+
+        button.close {
+          background: url("./assets/images/close.png") no-repeat;
+          background-size: contain;
+        }
+
+        button.open {
+          background: url("./assets/images/3line.png") no-repeat;
+          background-size: contain;
+        }
+
+        button.search {
+          background: url("./assets/images/search.png") no-repeat;
+          background-size: contain;
+        }
+      }
+    }
+    .searchbox {
+      display: none;
+    }
+  }
+
+  .header {
+    background: #2f2f2f;
+    height: 55px;
+    .container {
+      width: 100%;
+      padding: 0 10px;
+      margin: 0 auto;
+
+      h1 {
+        font-size: 20px;
+        font-weight: normal;
+        color: #fff;
+        float: left;
+
+        a {
+          display: block;
+          height: 100%;
+          line-height: 55px;
+
+          color: #fff;
+        }
+        a:hover {
+          background-color: #464646;
+        }
+      }
+    }
+  }
+
+  .footer {
+    height: 60px;
+    position: fixed;
+    background: #f2f2f2;
+    bottom: 0;
+    width: 100%;
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .main {
+      width: 100%;
+      margin: 0 auto;
+      overflow: hidden;
+
+      .locale {
+        display: none;
+        position: relative;
+        padding-left: 40px;
+        padding-top: 18px;
+        height: 60px;
+        .earth {
+          display: block;
+
+          background: url(./assets/images/earth.png) no-repeat;
+          width: 30px;
+          height: 30px;
+          left: 0;
+          top: 16px;
+          position: absolute;
+        }
+        span {
+          font-size: 12px;
+        }
+      }
+
+      .contact {
+        width: 100%;
+        ul {
+          display: flex;
+          float: none;
+          width: 100%;
+          height: 60px;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+
+          li {
+            float: none;
+            flex: 1;
+            padding: 0;
+            a {
+              font-size: 12px;
+              color: #626262;
+              line-height: 60px;
+            }
+
+            &:nth-child(n + 4) {
+              display: none;
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 @media screen and (max-width: 767px) {
@@ -457,11 +673,12 @@
     }
 
     .main {
-      max-width: 1280px;
+      width: 100%;
       margin: 0 auto;
       overflow: hidden;
 
       .locale {
+        display: none;
         position: relative;
         padding-left: 40px;
         padding-top: 18px;
@@ -482,13 +699,29 @@
       }
 
       .contact {
-        li {
-          float: left;
-          padding-right: 30px;
-          padding-top: 18px;
-          a {
-            font-size: 12px;
-            color: #626262;
+        width: 100%;
+        ul {
+          display: flex;
+          float: none;
+          width: 100%;
+          height: 60px;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+
+          li {
+            float: none;
+            flex: 1;
+            padding: 0;
+            a {
+              font-size: 12px;
+              color: #626262;
+              line-height: 60px;
+            }
+
+            &:nth-child(n + 4) {
+              display: none;
+            }
           }
         }
       }

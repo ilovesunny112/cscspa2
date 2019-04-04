@@ -115,9 +115,9 @@ ul {
     padding: 4px 5px;
 
     li {
-      // display: table-cell; 
-      
-      width: 90%;
+      // display: table-cell;
+
+      width: 90% !important;
       padding: 4px;
       float: none !important;
       margin-left: 0%;
@@ -128,13 +128,12 @@ ul {
       box-shadow: 0px 0px 4px #c1c1c1;
 
       &:nth-child(2n),
-      &:nth-child(2n+1){
+      &:nth-child(2n + 1) {
         margin-right: auto;
         margin-left: auto;
         float: none;
       }
     }
-   
   }
 }
 @media screen and (max-width: 375px) {

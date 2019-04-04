@@ -364,7 +364,7 @@ export default {
         console.log(scrollTop);
         console.log(targetH);
 
-        if (scrollTop > targetH) {
+        if (scrollTop > targetH - 20) {
           that.leftFixed = true;
         } else {
           that.leftFixed = false;

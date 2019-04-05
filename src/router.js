@@ -66,6 +66,13 @@ export default new Router({
         digitalPage: true,
         scenario: "service"
       }
+    },
+    
+    {
+      path: "/solution/:product",
+      name: "solutions",
+      component: () => import(/* webpackChunkName: "solution" */ './pages/Solution.vue'),
+      props: route=>({solution:route.params.product})
     }
   ]
 })

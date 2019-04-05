@@ -25,10 +25,12 @@
     </div>
     <div class="meta">
       <div class="industry">
-        <a href="javascript:;" v-for="(val, idx) in indArr" :key="idx">{{val}} ,</a>
+        <router-link v-for="(val, idx) in indArr" :to="`/industry/${val}`" :key="'ind_'+idx">{{val}} ,</router-link>
+        
       </div>
       <div class="solution">
-        <a href="javascript:;" v-for="(val, idx) in solutionArr" :key="idx">{{val}} ,</a>
+        <router-link v-for="(val, idx) in solutionArr" :to="`/solution/${val}`" :key="'sol_'+idx">{{val}} ,</router-link>
+        
 
       </div>
     </div>

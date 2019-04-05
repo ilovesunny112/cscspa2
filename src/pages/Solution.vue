@@ -5,48 +5,63 @@
   >
     <div class="banner">
       <ul>
-        <li class="active">
+        <li v-show="scenario=='customer'">
           <img
-            src="https://www.microsoft.com/china/casestudies/CaseImages/banners/huafeng-banner.jpg"
+            src="https://www.microsoft.com/china/casestudies/images/CaseClass1.jpg"
             alt=""
           >
           <div class="container">
             <div class="info">
-              <h3>华风爱科气象科技（北京）有限公司</h3>
+              <h3>密切客户沟通</h3>
               <p>
-                Azure 的虚拟机、存储以及 PaaS 层服务保障华风爱科的气象数据安全高效的实现每秒数万次访问
+                Engage Customers
               </p>
-              <div class="cta"><a href="javascript:;">了解详情</a></div>
+
             </div>
           </div>
         </li>
-        <li>
+        <li v-show="scenario=='employee'">
           <img
-            src="https://www.microsoft.com/china/casestudies/CaseImages/banners/huafeng-banner.jpg"
+            src="https://www.microsoft.com/china/casestudies/images/CaseClass2.jpg"
             alt=""
           >
           <div class="container">
             <div class="info">
-              <h3>华风爱科气象科技（北京）有限公司</h3>
+              <h3>予力赋能员工
+              </h3>
               <p>
-                Azure 的虚拟机、存储以及 PaaS 层服务保障华风爱科的气象数据安全高效的实现每秒数万次访问
+                Empower Employees
               </p>
-              <div class="cta"><a href="javascript:;">了解详情</a></div>
             </div>
           </div>
         </li>
-        <li>
+        <li v-show="scenario=='business'">
           <img
-            src="https://www.microsoft.com/china/casestudies/CaseImages/banners/huafeng-banner.jpg"
+            src="https://www.microsoft.com/china/casestudies/images/CaseClass3.jpg"
             alt=""
           >
           <div class="container">
             <div class="info">
-              <h3>华风爱科气象科技（北京）有限公司</h3>
+              <h3>优化业务运营</h3>
               <p>
-                Azure 的虚拟机、存储以及 PaaS 层服务保障华风爱科的气象数据安全高效的实现每秒数万次访问
+                Optimize Operations
               </p>
-              <div class="cta"><a href="javascript:;">了解详情</a></div>
+            </div>
+          </div>
+        </li>
+        <li v-show="scenario=='service'">
+          <img
+            src="https://www.microsoft.com/china/casestudies/images/CaseClass4.jpg"
+            alt=""
+          >
+          <div class="container">
+            <div class="info">
+              <h3>转型产品服务
+              </h3>
+              <p>
+                Transform Products
+              </p>
+
             </div>
           </div>
         </li>
@@ -54,38 +69,9 @@
 
     </div>
     <div class="main">
-      <div
-        class="digital"
-        v-if="!digitalPage"
-      >
-        <h3>数字化转型领域</h3>
-        <ul>
-          <li>
-            <router-link :to="{name:'customer connection'}">
-              密切客户沟通</router-link>
-          </li>
-          <li>
-            <router-link :to="{name:'power employee'}">
-              予力赋能员工
-            </router-link>
-          </li>
-          <li>
-            <router-link :to="{name:'optimize business'}">
-              优化业务运营</router-link>
-          </li>
-          <li>
-            <router-link :to="{name:'transform service'}">
-              转型产品服务</router-link>
-          </li>
-        </ul>
-      </div>
-
+       
       <div class="container">
-        <div
-          class="search fl"
-          :class="{fixed:leftFixed}"
-          ref="leftPanel"
-        >
+        <div class="search fl">
           <div class="inputbox">
             <input
               type="text"
@@ -101,10 +87,7 @@
             <a href="javascript:;">清空所有选项</a>
           </div>
           <div class="solution">
-            <h3
-              :class="{active:solutionActive}"
-              @click="solutionActive=!solutionActive"
-            >解决方案领域</h3>
+            <h3>解决方案领域</h3>
             <ul class="">
 
               <li
@@ -134,10 +117,7 @@
             </ul>
           </div>
           <div class="industry">
-            <h3
-              :class="{active:industryActive}"
-              @click="industryActive=!industryActive"
-            >行业</h3>
+            <h3>行业</h3>
             <ul class="opts">
 
               <li
@@ -159,9 +139,10 @@
         <div class="caselist fr">
           <vue-data-loading
             :loading="loading"
-            :listens="[ 'infinite-scroll']"
+            :listens="[  'infinite-scroll']"
             :completed="completed"
             @infinite-scroll="infiniteScroll"
+            @pull-down="pullDown"
           >
             <case-list
               :cur-page="1"
@@ -184,12 +165,17 @@ import {
 import CaseList from "../components/CaseList/List";
 import VueDataLoading from "vue-data-loading";
 import { setTimeout, clearTimeout } from "timers";
+import { log } from 'util';
 
 export default {
   props: {
     digitalPage: {
       type: Boolean,
       default: false
+    },
+    scenario: String,
+    solution:{
+      type:String
     }
   },
   data() {
@@ -205,10 +191,7 @@ export default {
       queryObj: null,
       completed: false,
       keyword: "",
-      componentShow: true,
-      industryActive: false,
-      solutionActive: false,
-      leftFixed: false
+      componentShow: true
     };
   },
   components: {
@@ -251,30 +234,32 @@ export default {
       item.active = !item.active;
     },
     async init() {
-      let that = this;
-      return new Promise(async (resolve, reject) => {
-        try {
-          that.loading = true;
-          let [solutionResp, indResp] = await getAllMetaData();
+       this.loading = true;
+       let solution = this.solution
+       console.log("处理")
 
-          that.solutions = solutionResp.data;
-          that.industry = indResp.data;
+       let caseReq = getListByKeyword(this.curPage, solution)
+       let metaReq = getAllMetaData()
 
-          let caseResp = await getListByPage(that.curPage);
-          let caseData = caseResp.data;
+       
 
-          if (caseData.code == 0) {
-            that.caseArr = that.caseArr.concat(caseData.data);
-          } else {
-          }
 
-          that.loading = false;
-          resolve(caseData);
-          this.$Progress.finish();
-        } catch (err) {
-          reject(err);
-        }
-      });
+       let [solutionRsp, industryRsp] = await metaReq
+       this.solutions = solutionRsp.data
+       this.industry = industryRsp.data
+
+
+       let resp = await caseReq
+       if(resp.data && resp.data.data.length > 0){
+        console.log("入了")
+        this.caseArr =  this.caseArr.concat(resp.data.data)
+        this.loading = false
+        this.$Progress.finish()
+       }
+       this.$Progress.finish()
+
+       
+
     },
     infiniteScroll() {
       console.log("infiniteScroll invoked");
@@ -282,44 +267,27 @@ export default {
       if (this.keyword) {
         this.fetchDataByKeyword();
       } else {
-        this.fetchData();
+        this.fetchNextPageData();
       }
     },
     pullDown() {
       console.log("pulldown invoked");
     },
-    async fetchData() {
-      try {
-        this.$Progress.start();
-        console.log("curpage is ", this.curPage);
-
-        let page = this.curPage + 1;
-
-        let caseResp;
-        if (
-          this.queryObj &&
-          (this.queryObj.solution || this.queryObj.industry)
-        ) {
-          caseResp = await getListByPage(page, this.queryObj);
-        } else {
-          caseResp = await getListByPage(page);
-        }
-
-        let caseData = caseResp.data;
-        if (caseData.code == 0) {
-          this.caseArr = this.caseArr.concat(caseData.data);
-          if (caseData.data.length < 12) {
-            this.completed = true;
-          }
-        } else {
-        }
-
-        this.curPage = page;
-        this.loading = false;
-        this.$Progress.finish();
-      } catch (err) {
-        console.log(err);
+    async fetchNextPageData() {
+      this.curPage++
+      this.$Progress.start()
+      this.loading = true
+      let resp = await getListByKeyword(this.curPage, this.solution)
+      
+      if(resp.data && resp.data.data.length > 0 ){
+        this.caseArr = this.caseArr.concat(resp.data.data);
       }
+      if(resp.data.data.length < 12){
+        this.completed = true;
+      }
+
+      this.loading = false;
+      this.$Progress.finish()
     },
 
     initNewSearch() {
@@ -345,46 +313,13 @@ export default {
         this.completed = true;
       }
       this.$Progress.finish();
-    },
-
-    setFixedClass() {
-      console.log(this.$refs.leftPanel);
-      let el = this.$refs.leftPanel;
-
-      let targetH = getElementTop(el);
-      targetH = targetH < 376 ? 376 : targetH;
-      let that = this;
-
-      window.addEventListener("scroll", function() {
-        let newTargetH = getElementTop(el)
-
-        if(newTargetH > targetH){
-          targetH = newTargetH
-        }
-
-        var scrollTop =
-          document.documentElement.scrollTop ||
-          window.pageYOffset ||
-          document.body.scrollTop;
-        console.log("滚动");
-        console.log(scrollTop);
-        console.log(targetH);
-
-        if (scrollTop > targetH - 20) {
-          that.leftFixed = true;
-        } else {
-          that.leftFixed = false;
-        }
-      });
     }
   },
   async created() {
-    await this.init();
-    console.log(2);
+    this.init(); 
   },
   async mounted() {
     this.$Progress.start();
-    this.setFixedClass();
   },
   beforeUpdate() {
     this.componentShow = false;
@@ -392,18 +327,6 @@ export default {
     this.componentShow = true;
   }
 };
-
-function getElementTop(el) {
-  var actualTop = el.offsetTop;
-  var current = el.offsetParent;
-
-  while (current) {
-    actualTop += current.offsetTop;
-    current = current.offsetParent;
-  }
-
-  return actualTop;
-}
 </script>
 <style lang="less" scoped>
 .banner {
@@ -441,7 +364,7 @@ function getElementTop(el) {
           left: 40px;
           top: 40px;
           width: 322px;
-          height: 160px;
+          height: 120px;
           background: rgba(0, 0, 0, 0.5);
           text-align: left;
           color: #fff;
@@ -526,20 +449,10 @@ function getElementTop(el) {
     overflow: hidden;
     //  margin-left: -2%;
     padding-top: 30px;
-    position: relative;
 
     .search {
       width: 23%;
-      max-width: 281px;
-      transition: all.5s;
-      top:0px;
-      
-      
-      &.fixed{
-        position: fixed;
-        top:20px;
-      }
-      
+
       .inputbox {
         border: 1px solid #b5b5b5;
         line-height: 30px;
@@ -709,9 +622,8 @@ function getElementTop(el) {
     }
   }
 }
-
 @media screen and (max-width: 1199px) {
-  .banner {
+.banner {
     ul {
       width: 100%;
       overflow: hidden;
@@ -835,13 +747,6 @@ function getElementTop(el) {
 
       .search {
         width: 23%;
-
-
-
-        &.fixed {
-          position: fixed;
-          top: 20px;
-        }
 
         .inputbox {
           border: 1px solid #b5b5b5;
@@ -1012,303 +917,10 @@ function getElementTop(el) {
       }
     }
   }
+
 }
-
 @media screen and (max-width: 991px) {
-  .banner {
-    ul {
-      width: 100%;
-      overflow: hidden;
-
-      li {
-        position: relative;
-        float: left;
-        width: 100%;
-        margin-right: -100%;
-
-        &.active {
-          margin-right: 0;
-        }
-
-        img {
-          width: 100%;
-          float: left;
-        }
-        .container {
-          max-width: 1280px;
-          height: 100%;
-          margin: 0 auto;
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          left: 0;
-          right: 0;
-
-          .info {
-            position: absolute;
-            padding: 10px;
-            left: 20px;
-            top: 20px;
-            width: 420px;
-            height: 100px;
-            background: rgba(0, 0, 0, 0.5);
-            text-align: left;
-            color: #fff;
-
-            h3 {
-              font-size: 16px;
-              line-height: 32px;
-            }
-
-            p {
-              line-height: 24px;
-              font-size: 14px;
-            }
-            .cta {
-              a:link,
-              a:visited,
-              a:hover,
-              a:active {
-                color: #fff;
-                font-size: 16px;
-                // font-weight: bold;
-                line-height: 34px;
-                display: inline-block;
-              }
-
-              a:after {
-                content: ">";
-                display: inline-block;
-                transform: translateX(4px) scale(1);
-                transition: all 0.5s;
-              }
-
-              a:hover:after {
-                transform: translateX(12px) scale(1);
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-  .main {
-    max-width: 1280px;
-    margin: 0 auto;
-    margin-top: 5px;
-    text-align: left;
-    overflow: hidden;
-    padding: 0 10px;
-
-    .digital {
-      h3 {
-        line-height: 36px;
-        font-size: 14px;
-      }
-
-      ul {
-        margin-left: -2%;
-        overflow: hidden;
-        // max-width: 1280px;
-        li {
-          float: left;
-          width: 23%;
-          box-sizing: border-box;
-          margin-left: 2%;
-          background: #646464;
-          text-align: center;
-
-          a {
-            display: block;
-            line-height: 38px;
-            font-size: 14px;
-            color: #fff;
-            transition: all 0.6s;
-          }
-          a:hover {
-            background-color: #3c3c3c;
-          }
-        }
-      }
-    }
-
-    .container {
-      overflow: hidden;
-      //  margin-left: -2%;
-      padding-top: 20px;
-
-      .search {
-        width: 23%;
-
-        .inputbox {
-          border: 1px solid #b5b5b5;
-          line-height: 20px;
-          height: 20px;
-          overflow: hidden;
-          position: relative;
-
-          input {
-            height: 20px;
-            border: none;
-            background-color: #fff;
-            margin: 0;
-            padding: 0;
-            display: inline-block;
-            outline: none;
-            box-sizing: border-box;
-          }
-
-          input:first-child {
-            width: 100%;
-            padding: 0 40px 0 10px;
-          }
-          input:last-child {
-            width: 20px;
-            height: 20px;
-            position: absolute;
-            right: 0;
-            top: 0;
-          }
-        }
-
-        .clearall {
-          margin-top: 24px;
-          border-top: 1px solid #787878;
-
-          a {
-            line-height: 30px;
-            height: 30px;
-            font-size: 12px;
-            color: #05a4ee;
-            padding-left: 10px;
-          }
-        }
-        h3 {
-          height: 30px;
-          line-height: 30px;
-          padding-left: 10px;
-          color: #fff;
-          font-size: 14px;
-          font-weight: bold;
-          background: #646464;
-        }
-        .solution {
-          ul {
-            li {
-              margin-top: 1px;
-              h4 {
-                height: 30px;
-                line-height: 30px;
-                background-color: #dcdedf;
-                padding-left: 14px;
-                color: #505050;
-                font-size: 13px;
-                position: relative;
-                cursor: pointer;
-                & + ul {
-                  height: 0px;
-                }
-                &:after {
-                  content: "";
-                  display: block;
-                  position: absolute;
-                  width: 8px;
-                  height: 8px;
-                  border: 1px solid #6b6270;
-                  border-bottom-color: transparent;
-                  border-right-color: transparent;
-                  top: 16px;
-                  right: 10px;
-                  transition: all 0.6s;
-                  transform: rotateZ(45deg) scale(0.8);
-                  transform-origin: 50%;
-                }
-
-                &.active {
-                  &:after {
-                    transform: rotate(945deg);
-                    top: 10px;
-                  }
-
-                  & + ul.opts {
-                    height: auto;
-                    transform: scaleY(1);
-                    max-height: 270px;
-                  }
-                }
-              }
-
-              .opts {
-                // height: 0px;
-                // transform: scaleY(0);
-                overflow: hidden;
-                transform-origin: top;
-                transition: all 0.9s;
-                max-height: 0;
-                height: 0;
-                .item {
-                  label {
-                    line-height: 30px;
-                    height: 30px;
-                    font-size: 12px;
-                    display: block;
-                    cursor: pointer;
-                    padding-left: 10px;
-
-                    input {
-                      margin: 0;
-                      padding: 0;
-                      margin-top: -2px;
-                      margin-bottom: 1px;
-                      vertical-align: middle;
-                    }
-
-                    span {
-                      padding-left: 4px;
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-
-        .industry {
-          margin-top: 40px;
-
-          .opts {
-            .item {
-              line-height: 40px;
-              border-bottom: 1px solid #c1c1c1;
-              font-size: 12px;
-
-              label {
-                display: block;
-                cursor: pointer;
-                padding-left: 10px;
-                position: relative;
-                input {
-                  margin-top: -2px;
-                  margin-bottom: 1px;
-                  vertical-align: middle;
-                  position: absolute;
-                  right: 10px;
-                  top: 16px;
-                }
-              }
-            }
-          }
-        }
-      }
-
-      .caselist {
-        width: 75%;
-        padding-left: 10px;
-        box-sizing: border-box;
-        padding-bottom: 100px;
-      }
-    }
-  }
+  
 }
 
 @media screen and (max-width: 767px) {
@@ -1447,11 +1059,6 @@ function getElementTop(el) {
       .search {
         width: 100%;
         float: none;
-
-        &.fixed {
-          position: static;
-        }
-
         .inputbox {
           border: 1px solid #b5b5b5;
           line-height: 30px;

@@ -13,7 +13,8 @@
     "vue-data-loading": "^0.2.4",
     "vue-progressbar": "^0.7.5",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "wheel-indicator": "^1.2.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.5.0",

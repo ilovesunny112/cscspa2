@@ -86,7 +86,9 @@
           :class="{fixed:leftFixed}"
           ref="leftPanel"
         >
-          <div class="inputbox">
+
+        <left-search @solution-update="solutionUpdate" @industry-update="industryUpdate"></left-search>
+          <!-- <div class="inputbox">
             <input
               type="text"
               placeholder=""
@@ -153,8 +155,10 @@
                   ></label>
               </li>
             </ul>
-          </div>
+          </div>   -->
 
+
+          
         </div>
         <div class="caselist fr">
           <vue-data-loading
@@ -182,6 +186,7 @@ import {
   getListByKeyword
 } from "../data/index.js";
 import CaseList from "../components/CaseList/List";
+import LeftSearch from '../components/LeftSearch/Left'
 import VueDataLoading from "vue-data-loading";
 import { setTimeout, clearTimeout } from "timers";
 
@@ -213,7 +218,8 @@ export default {
   },
   components: {
     CaseList,
-    VueDataLoading
+    VueDataLoading,
+    LeftSearch
   },
 
   watch: {
@@ -366,9 +372,7 @@ export default {
           document.documentElement.scrollTop ||
           window.pageYOffset ||
           document.body.scrollTop;
-        console.log("滚动");
-        console.log(scrollTop);
-        console.log(targetH);
+        
 
         if (scrollTop > targetH - 20) {
           that.leftFixed = true;
@@ -376,7 +380,17 @@ export default {
           that.leftFixed = false;
         }
       });
+    },
+
+
+
+    solutionUpdate(solution){
+      this.solutionChecked = solution
+    },
+    industryUpdate(industry){
+      this.indChecked = industry
     }
+
   },
   async created() {
     await this.init();

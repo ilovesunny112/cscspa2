@@ -71,6 +71,8 @@
     <div class="main">
        
       <div class="container">
+        <h3 class="search-title">{{ solution }} 相关的案例还有：</h3>
+
         <div class="search fl">
           <div class="inputbox">
             <input
@@ -323,7 +325,6 @@ export default {
   },
   beforeUpdate() {
     this.componentShow = false;
-    console.log("before update");
     this.componentShow = true;
   }
 };
@@ -412,6 +413,13 @@ export default {
   margin-top: 11px;
   text-align: left;
   overflow: hidden;
+
+  .search-title{
+    font-size: 18px;
+    line-height: 40px;
+    font-weight: normal;
+    margin-bottom: 20px;
+  }
 
   .digital {
     h3 {

@@ -189,11 +189,10 @@ export default {
       this.refreshHeight();
     },
     scrollDown() {
+      console.log("down")
       this.$nextTick(() => {
-        console.log(this.$refs);
-        let { leftPanel } = this.$refs;
-        console.log(leftPanel);
-        let parent = leftPanel.parentNode;
+        if(this.offsetHeight < document.documentElement.clientHeight - 80 || this.fixed == false) return;
+        let parent = this.parentNode;
         let styleObj = window.getComputedStyle(parent, null);
         let targetTop = parseInt(styleObj.top) - this.offsetHeight * 0.2;
 
@@ -210,8 +209,9 @@ export default {
     },
     scrollUp() {
       this.$nextTick(() => {
-        let { leftPanel } = this.$refs;
-        let parent = leftPanel.parentNode;
+        if(this.offsetHeight < document.documentElement.clientHeight - 80 || this.fixed == false) return;
+        
+        let parent = this.parentNode;
         let styleObj = window.getComputedStyle(parent, null);
         let targetTop = parseInt(styleObj.top) + this.offsetHeight * 0.2;
 
@@ -257,8 +257,8 @@ export default {
         parentNode.style.transition = "none";
         targetTop = nowTop + (ny - sy);
 
-        if (targetTop > 150) {
-          targetTop = 150;
+        if (targetTop > 100) {
+          targetTop = 100;
           
         }
         if(targetTop>20){

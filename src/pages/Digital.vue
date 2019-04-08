@@ -96,69 +96,12 @@
       </div>
 
       <div class="container">
-        <div class="search fl">
-          <div class="inputbox">
-            <input
-              type="text"
-              placeholder=""
-              v-model="keyword"
-            >
-            <input
-              type="button"
-              value="so"
-            >
-          </div>
-          <div class="clearall">
-            <a href="javascript:;">清空所有选项</a>
-          </div>
-          <div class="solution">
-            <h3>解决方案领域</h3>
-            <ul class="">
-
-              <li
-                v-for="(item, index) in solutions"
-                :key="index"
-              >
-                <h4
-                  :class="{active:item.active}"
-                  @click="toggleShowStatus(item)"
-                >{{item.title}}</h4>
-                <ul class="opts">
-                  <li
-                    class="item"
-                    v-for="(opt,idx) in item.options"
-                    :key="idx"
-                  >
-                    <label>
-                      <input
-                        type="checkbox"
-                        :value="opt.title=='全部' ? `${item.title}_${opt.title}`:`${opt.title}`"
-                        v-model="solutionChecked"
-                      ><span>{{opt.title}}</span>
-                    </label>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-          <div class="industry">
-            <h3>行业</h3>
-            <ul class="opts">
-
-              <li
-                class="item"
-                v-for="(ind, index) in industry"
-                :key="index"
-              >
-                <label><span>{{ind}}</span><input
-                    type="radio"
-                    :value="ind"
-                    name="indu"
-                    v-model="indChecked"
-                  ></label>
-              </li>
-            </ul>
-          </div>
+        <div class="search fl" :class="{fixed:leftFixed}" ref="leftPanel">
+          <left-search
+            @solution-update="solutionUpdate"
+            @industry-update="industryUpdate"
+            :fixed="leftFixed"
+          ></left-search>
 
         </div>
         <div class="caselist fr">
@@ -190,6 +133,7 @@ import {
 import CaseList from "../components/CaseList/List";
 import VueDataLoading from "vue-data-loading";
 import { setTimeout, clearTimeout } from "timers";
+import LeftSearch from "../components/LeftSearch/Left";
 
 export default {
   props: {
@@ -212,12 +156,14 @@ export default {
       queryObj: null,
       completed: false,
       keyword: "",
-      componentShow: true
+      componentShow: true,
+      leftFixed: false
     };
   },
   components: {
     CaseList,
-    VueDataLoading
+    VueDataLoading,
+    LeftSearch
   },
 
   watch: {
@@ -249,7 +195,7 @@ export default {
     handleDate() {
       return new Date().getTime();
     }
-  },
+  }, 
   methods: {
     toggleShowStatus(item) {
       item.active = !item.active;
@@ -349,6 +295,42 @@ export default {
         this.completed = true;
       }
       this.$Progress.finish();
+    },
+
+    setFixedClass() {
+      console.log(this.$refs.leftPanel);
+      let el = this.$refs.leftPanel;
+
+      let targetH = getElementTop(el);
+      targetH = targetH < 376 ? 376 : targetH;
+      let that = this;
+      console.log("target h",targetH)
+      window.addEventListener("scroll", function() {
+        let newTargetH = getElementTop(el);
+
+        if (newTargetH > targetH) {
+          targetH = newTargetH;
+        }
+
+       
+
+        var scrollTop =
+          document.documentElement.scrollTop ||
+          window.pageYOffset ||
+          document.body.scrollTop;
+
+        if (scrollTop > targetH - 20) {
+          that.leftFixed = true;
+        } else {
+          that.leftFixed = false;
+        }
+      });
+    },
+    solutionUpdate(solution) {
+      this.solutionChecked = solution;
+    },
+    industryUpdate(industry) {
+      this.indChecked = industry;
     }
   },
   async created() {
@@ -357,6 +339,7 @@ export default {
   },
   async mounted() {
     this.$Progress.start();
+     this.setFixedClass();
   },
   beforeUpdate() {
     this.componentShow = false;
@@ -364,6 +347,18 @@ export default {
     this.componentShow = true;
   }
 };
+
+function getElementTop(el) {
+  var actualTop = el.offsetTop;
+  var current = el.offsetParent;
+
+  while (current) {
+    actualTop += current.offsetTop;
+    current = current.offsetParent;
+  }
+
+  return actualTop;
+}
 </script>
 <style lang="less" scoped>
 .banner {
@@ -489,6 +484,16 @@ export default {
 
     .search {
       width: 23%;
+      max-width: 281px;
+      transition: all.5s;
+      top: 0px;
+
+
+      &.fixed {
+        position: fixed;
+        top: 20px;
+      }
+
 
       .inputbox {
         border: 1px solid #b5b5b5;

@@ -90,6 +90,11 @@ var WheelIndicator = require("wheel-indicator");
 import { getAllMetaData } from "../../data/index.js";
 import { parse } from "path";
 export default {
+  props: {
+    fixed: {
+      type: Boolean
+    }
+  },
   data() {
     return {
       solutions: [],
@@ -141,6 +146,14 @@ export default {
     },
     keyword() {
       this.$emit("keyword-update", this.keyword);
+    },
+    fixed(newVal, oldVal) {
+      console.log("fixed change");
+      console.log("before : ", oldVal);
+      console.log("now : ", newVal);
+      if (newVal == false) {
+        this.parentNode.style = "";
+      }
     }
   },
 
@@ -246,7 +259,10 @@ export default {
 
         if (targetTop > 150) {
           targetTop = 150;
-          touchTop = true;
+          
+        }
+        if(targetTop>20){
+          touchTop = true
         }
 
         if (

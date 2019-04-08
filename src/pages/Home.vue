@@ -87,7 +87,11 @@
           ref="leftPanel"
         >
 
-        <left-search @solution-update="solutionUpdate" @industry-update="industryUpdate"></left-search>
+          <left-search
+            @solution-update="solutionUpdate"
+            @industry-update="industryUpdate"
+            :fixed="leftFixed"
+          ></left-search>
           <!-- <div class="inputbox">
             <input
               type="text"
@@ -157,8 +161,6 @@
             </ul>
           </div>   -->
 
-
-          
         </div>
         <div class="caselist fr">
           <vue-data-loading
@@ -186,7 +188,7 @@ import {
   getListByKeyword
 } from "../data/index.js";
 import CaseList from "../components/CaseList/List";
-import LeftSearch from '../components/LeftSearch/Left'
+import LeftSearch from "../components/LeftSearch/Left";
 import VueDataLoading from "vue-data-loading";
 import { setTimeout, clearTimeout } from "timers";
 
@@ -362,17 +364,16 @@ export default {
       let that = this;
 
       window.addEventListener("scroll", function() {
-        let newTargetH = getElementTop(el)
+        let newTargetH = getElementTop(el);
 
-        if(newTargetH > targetH){
-          targetH = newTargetH
+        if (newTargetH > targetH) {
+          targetH = newTargetH;
         }
 
         var scrollTop =
           document.documentElement.scrollTop ||
           window.pageYOffset ||
           document.body.scrollTop;
-        
 
         if (scrollTop > targetH - 20) {
           that.leftFixed = true;
@@ -382,15 +383,12 @@ export default {
       });
     },
 
-
-
-    solutionUpdate(solution){
-      this.solutionChecked = solution
+    solutionUpdate(solution) {
+      this.solutionChecked = solution;
     },
-    industryUpdate(industry){
-      this.indChecked = industry
+    industryUpdate(industry) {
+      this.indChecked = industry;
     }
-
   },
   async created() {
     await this.init();
@@ -546,14 +544,13 @@ function getElementTop(el) {
       width: 23%;
       max-width: 281px;
       transition: all.5s;
-      top:0px;
-      
-      
-      &.fixed{
+      top: 0px;
+
+      &.fixed {
         position: fixed;
-        top:20px;
+        top: 20px;
       }
-      
+
       .inputbox {
         border: 1px solid #b5b5b5;
         line-height: 30px;
@@ -849,8 +846,6 @@ function getElementTop(el) {
 
       .search {
         width: 23%;
-
-
 
         &.fixed {
           position: fixed;

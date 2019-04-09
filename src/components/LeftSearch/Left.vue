@@ -189,9 +189,13 @@ export default {
       this.refreshHeight();
     },
     scrollDown() {
-      console.log("down")
+      console.log("down");
       this.$nextTick(() => {
-        if(this.offsetHeight < document.documentElement.clientHeight - 80 || this.fixed == false) return;
+        if (
+          this.offsetHeight < document.documentElement.clientHeight - 80 ||
+          this.fixed == false
+        )
+          return;
         let parent = this.parentNode;
         let styleObj = window.getComputedStyle(parent, null);
         let targetTop = parseInt(styleObj.top) - this.offsetHeight * 0.2;
@@ -209,8 +213,12 @@ export default {
     },
     scrollUp() {
       this.$nextTick(() => {
-        if(this.offsetHeight < document.documentElement.clientHeight - 80 || this.fixed == false) return;
-        
+        if (
+          this.offsetHeight < document.documentElement.clientHeight - 80 ||
+          this.fixed == false
+        )
+          return;
+
         let parent = this.parentNode;
         let styleObj = window.getComputedStyle(parent, null);
         let targetTop = parseInt(styleObj.top) + this.offsetHeight * 0.2;
@@ -252,6 +260,9 @@ export default {
         false
       );
       parentNode.addEventListener("touchmove", function(e) {
+        if (document.documentElement.clientHeight > that.offsetHeight)
+          return false;
+
         ny = e.changedTouches[0].clientY;
 
         parentNode.style.transition = "none";
@@ -259,10 +270,9 @@ export default {
 
         if (targetTop > 100) {
           targetTop = 100;
-          
         }
-        if(targetTop>20){
-          touchTop = true
+        if (targetTop > 20) {
+          touchTop = true;
         }
 
         if (
@@ -275,11 +285,12 @@ export default {
         }
         parentNode.style.top = targetTop + "px";
 
-        e.stopPropagation();
-        e.preventDefault();
+        if (window.getComputedStyle(this).position == "fixed") {
+          e.stopPropagation();
+          e.preventDefault();
+        }
       });
       parentNode.addEventListener("touchend", function(e) {
-        console.log("几次 end");
         let endTime = Date.now();
         e.stopPropagation();
 
@@ -287,19 +298,28 @@ export default {
 
         if (Math.abs(ny - sy) > 20 && endTime - startTime < 200) {
           if (ny > sy) {
+            console.log("向下");
             that.scrollUp();
           } else {
+            console.log("向上");
             that.scrollDown();
           }
         }
 
         if (touchTop) {
           touchTop = false;
+
           that.touchTop();
         }
         if (touchBottom) {
           touchBottom = false;
+
           that.touchBottom();
+        }
+
+        if (window.getComputedStyle(this).position == "fixed") {
+          e.stopPropagation();
+          // e.preventDefault();
         }
       });
     },
@@ -540,6 +560,177 @@ export default {
 @media screen and (max-width: 639px) {
 }
 @media screen and (max-width: 414px) {
+  .search-component {
+    width: 100%;
+    max-width: 100%;
+    transition: all 0.5s;
+    top: 0px;
+
+    &.fixed {
+      position: static;
+      top: 20px;
+    }
+
+    .inputbox {
+      border: 1px solid #b5b5b5;
+      line-height: 30px;
+      height: 30px;
+      overflow: hidden;
+      position: relative;
+
+      input {
+        height: 30px;
+        border: none;
+        background-color: #fff;
+        margin: 0;
+        padding: 0;
+        display: inline-block;
+        outline: none;
+        box-sizing: border-box;
+      }
+
+      input:first-child {
+        width: 100%;
+        padding: 0 40px 0 10px;
+      }
+      input:last-child {
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        right: 0;
+        top: 0;
+      }
+    }
+
+    .clearall {
+      margin-top: 24px;
+      border-top: 1px solid #787878;
+
+      a {
+        line-height: 40px;
+        height: 40px;
+        font-size: 12px;
+        color: #05a4ee;
+        padding-left: 10px;
+      }
+    }
+    h3 {
+      height: 40px;
+      line-height: 40px;
+      padding-left: 10px;
+      color: #fff;
+      font-size: 16px;
+      font-weight: bold;
+      background: #646464;
+    }
+    .solution {
+      ul {
+        li {
+          margin-top: 1px;
+          h4 {
+            height: 35px;
+            line-height: 35px;
+            background-color: #dcdedf;
+            padding-left: 44px;
+            color: #505050;
+            font-size: 13px;
+            position: relative;
+            cursor: pointer;
+            & + ul {
+              // height: 0px;
+            }
+            &:after {
+              content: "";
+              display: block;
+              position: absolute;
+              width: 8px;
+              height: 8px;
+              border: 1px solid #6b6270;
+              border-bottom-color: transparent;
+              border-right-color: transparent;
+              top: 16px;
+              right: 10px;
+              transition: all 0.6s;
+              transform: rotateZ(45deg) scale(0.8);
+              transform-origin: 50%;
+            }
+
+            &.active {
+              &:after {
+                transform: rotate(945deg);
+                top: 10px;
+              }
+
+              & + ul.opts {
+                // height: auto;
+                // transform: scaleY(1);
+                // max-height: 270px;
+              }
+            }
+          }
+
+          .opts {
+            // height: 0px;
+            // transform: scaleY(0);
+            overflow: hidden;
+            transform-origin: top;
+            transition: all 0.9s;
+            // max-height: 0;
+            // height: 0;
+            .item {
+              label {
+                line-height: 30px;
+                height: 30px;
+                font-size: 12px;
+                display: block;
+                cursor: pointer;
+                padding-left: 10px;
+
+                input {
+                  margin: 0;
+                  padding: 0;
+                  margin-top: -2px;
+                  margin-bottom: 1px;
+                  vertical-align: middle;
+                }
+
+                span {
+                  padding-left: 12px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .industry {
+      margin-top: 40px;
+
+      .opts {
+        .item {
+          line-height: 40px;
+          border-bottom: 1px solid #c1c1c1;
+          font-size: 12px;
+
+          label {
+            display: block;
+            cursor: pointer;
+            padding-left: 10px;
+            position: relative;
+            input {
+              margin-top: -2px;
+              margin-bottom: 1px;
+              vertical-align: middle;
+              position: absolute;
+              right: 10px;
+              top: 16px;
+            }
+          }
+        }
+      }
+    }
+  }
 }
 @media screen and (max-width: 375px) {
 }

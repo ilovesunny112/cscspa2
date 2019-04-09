@@ -411,7 +411,7 @@
     background: #2f2f2f;
     height: 55px;
     .container {
-      width: 100%;
+      width: auto;
       padding: 0 10px;
       margin: 0 auto;
 
@@ -637,7 +637,7 @@
     background: #2f2f2f;
     height: 55px;
     .container {
-      width: 100%;
+      width: auto;
       padding: 0 10px;
       margin: 0 auto;
 

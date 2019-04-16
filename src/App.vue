@@ -52,6 +52,10 @@
       <router-view v-if="routeLoaded" />
     </transition>
     <!-- 组件结束 -->
+
+    <!-- notification -->
+
+    <!-- notification end -->
     <div class="footer">
       <div class="main">
         <div class="locale fl">
@@ -737,6 +741,7 @@
 import { getAllMetaData, getListByPage } from "./data/index.js";
 import CaseList from "./components/CaseList/List";
 import VueDataLoading from "vue-data-loading";
+import { setTimeout } from "timers";
 export default {
   data() {
     return {
@@ -760,6 +765,24 @@ export default {
         console.log("路由变化结束");
       }, 400);
     });
+
+    this.$notify({
+      content: "测试测试",
+      btn: "close"
+    });
+    setTimeout(() => {
+      this.$notify({
+        content: "测试测试2",
+        btn: "close"
+      });
+    }, 1000);
+
+    setTimeout(() => {
+      this.$notify({
+        content: "测试测试3",
+        btn: "close"
+      });
+    }, 2000);
   },
 
   methods: {

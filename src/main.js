@@ -5,6 +5,11 @@ import store from './store'
 import VueProgressBar from 'vue-progressbar'
 
 
+// 自定义插件
+
+import Notification from './global-components/notification'
+
+// end 自定义插件
 
 const options = {
   color: '#05a6f0',
@@ -23,6 +28,7 @@ const options = {
 }
 
 Vue.use(VueProgressBar, options)
+Vue.use(Notification)
 
 
 Vue.config.productionTip = false
